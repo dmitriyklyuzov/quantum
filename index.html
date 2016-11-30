@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<!-- https://github.com/dmitriyklyuzov/quantum -->
+<head>
+	<meta charset="UTF-8">
+	<title>Dmitriy Klyuzov</title>
+
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="public/css/styles.css">
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/getRows.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="col-lg-6">
+			<div class="panel panel-default" id="inputPanel">
+				<div class="panel-heading">
+					<h2 class="text-center">Output</h2>
+				</div>
+
+				<div class="panel-body">
+					<table id="myTable" class="table">
+						<thead>
+							<tr>
+								<th>ASIN</th>
+								<th>Title</th>
+								<th>MPN</th>
+								<th>Price</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-6">
+			<div class="panel panel-default" id="inputPanel">
+				<div class="panel-heading">
+					<h2 class="text-center">Input</h2>
+				</div>
+				<div class="panel-body">
+					<form action="login" method="POST" onsubmit="event.preventDefault(); login()">
+
+						<!-- Input -->
+						<div class="form-group text-center">
+							<div class="input-group">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-search"></span>
+								</div>
+								<input type="text" class="form-control input-lg" placeholder="" autofocus>
+							</div>
+						</div>
+
+						<!-- Button -->
+						<div class="form-group form-inline text-center">
+							<input type="submit" name="submit" class="btn btn-success" value="CHECK">
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+	<script>
+		$(document).ready(function(){
+			getRows();
+		});
+	</script>
+</html>

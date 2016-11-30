@@ -1,7 +1,7 @@
 function getRows(){
 
 	$.ajax({
-		url: "requestController.php",
+		url: "app/controllers/requestController.php",
 		type: "GET",
 		dataType: 'html',
 		success: function(html){
