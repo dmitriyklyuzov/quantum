@@ -20,9 +20,9 @@ The application should only be on one page, and have no reloads. The display pag
 1 Config file (Outlining the credentials for the database and the API)
 1 SQL dump of the database containing the information gathered from Amazon
 
-Amazon Credentials: Associate ID: q0d9b-20
-Access Key: AKIAIOWFZ4KTTJAKNLFQ
-Secret Access Code: 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
-Visual Reference Available @ http://www.quantum-co.com/interview-visual-reference.jpg
+- Amazon Credentials: Associate ID: q0d9b-20
+- Access Key: AKIAIOWFZ4KTTJAKNLFQ
+- Secret Access Code: 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
+- Visual Reference Available @ http://www.quantum-co.com/interview-visual-reference.jpg
 Please Note - Use an existing web server or set up apache (WAMP / MAMP / XAAMP, etc.) for the assignment, then include a zip with all required files. Please contact if there are any questions.
 
