@@ -33,7 +33,13 @@ Note: this link is broken so I built the web interface in the simplest fashion p
 
 Please Note - Use an existing web server or set up apache (WAMP / MAMP / XAAMP, etc.) for the assignment, then include a zip with all required files. Please contact if there are any questions.
 
-## Completed app screenshot
+## Completed app screenshots
+
+Original page
 
 ![alt text](https://github.com/dmitriyklyuzov/quantum/blob/master/screenshot.png?raw=true "Screenshot")
+
+Same page after looking up an ASIN
+
+![alt text](https://github.com/dmitriyklyuzov/quantum/blob/master/screenshot2.png?raw=true "Screenshot 2")
 
