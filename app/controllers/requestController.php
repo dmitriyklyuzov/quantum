@@ -22,7 +22,9 @@
 
 				$conn = DB();
 
-				$stmt = "INSERT INTO Amazon (ASIN, Title, MPN, Price) VALUES (:ASIN, :Title, :MPN, :Price)";
+				$stmt = "INSERT INTO Amazon (ASIN, Title, MPN, Price, date_added)
+
+						VALUES (:ASIN, :Title, :MPN, :Price, NOW())";
 
 				$query = $conn -> prepare($stmt);
 				$query -> execute(array(
@@ -95,7 +97,7 @@ webservices.amazon.com
 
 		$conn = DB();
 
-		$result = $conn -> query('SELECT * FROM Amazon');
+		$result = $conn -> query('SELECT * FROM Amazon ORDER BY date_added ASC');
 
 		if($result -> rowCount() !== 0){
 			while($row = $result -> fetch()){
