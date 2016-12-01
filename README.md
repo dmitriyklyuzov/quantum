@@ -24,6 +24,9 @@ The application should only be on one page, and have no reloads. The display pag
 - Access Key: AKIAIOWFZ4KTTJAKNLFQ
 - Secret Access Code: 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
 - Visual Reference Available @ http://www.quantum-co.com/interview-visual-reference.jpg
+
+Note: this link is broken so I built the web interface in the simplest fashion possible
+
 Please Note - Use an existing web server or set up apache (WAMP / MAMP / XAAMP, etc.) for the assignment, then include a zip with all required files. Please contact if there are any questions.
 
 Screenshot of the completed app
