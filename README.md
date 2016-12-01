@@ -27,5 +27,5 @@ The application should only be on one page, and have no reloads. The display pag
 Please Note - Use an existing web server or set up apache (WAMP / MAMP / XAAMP, etc.) for the assignment, then include a zip with all required files. Please contact if there are any questions.
 
 Screenshot of the completed app
-![alt text](https://github.com/dmitriyklyuzov/quantum/screenshot.png "Screenshot")
+![alt text](https://github.com/dmitriyklyuzov/quantum/blob/master/screenshot.png?raw=true "Screenshot")
 
