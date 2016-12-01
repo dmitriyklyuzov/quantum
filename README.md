@@ -37,9 +37,13 @@ Please Note - Use an existing web server or set up apache (WAMP / MAMP / XAAMP, 
 
 Original page
 
-![alt text](https://github.com/dmitriyklyuzov/quantum/blob/master/screenshot.png?raw=true "Screenshot")
+![alt text](https://github.com/dmitriyklyuzov/quantum/blob/master/screenshot1.png?raw=true "Screenshot 1")
 
 Same page after looking up an ASIN
 
 ![alt text](https://github.com/dmitriyklyuzov/quantum/blob/master/screenshot2.png?raw=true "Screenshot 2")
+
+And after inserting the item into the local database
+
+![alt text](https://github.com/dmitriyklyuzov/quantum/blob/master/screenshot3.png?raw=true "Screenshot 3")
 
