@@ -1,52 +1,55 @@
 <?php 
 	
-	// if(isset())
+	require('../../database.php');
 
-	define('HOST', 'localhost');
-	define('USER', 'root');
-	define('PASS', 'root');
-	define('DB', 'main');
+	if(isset($_POST['ASIN'])){
 
-	function DB(){
-		$db = mysqli_connect('localhost', 'root', 'root', 'quantum-db');
-		return $db;
-	}
+		$ASIN = $_POST['ASIN'];
 
-	$conn = DB();
-	$result = $conn -> query('SELECT * FROM Amazon');
-	$conn -> close();
+		// check if this asin is in the database already
 
-	if($result -> num_rows !== 0){
-		while($row = $result -> fetch_assoc()){
-			$asin = $row['ASIN'];
-			$title = $row['Title'];
-			$msn = $row['MSN'];
-			$price = $row['price'];
+		$conn = DB();
+		$query = $conn -> prepare("SELECT ASIN FROM Amazon WHERE ASIN = :ASIN");
+		$query -> execute(array(':ASIN' => $ASIN));
 
-			include('row.part.php');
+		if($query -> rowCount()==0){
 
+			if(isset($_POST['Title']) && isset($_POST['MPN']) && isset($_POST['Price'])){
+
+				$Title = $_POST['Title'];
+				$MPN = $_POST['MPN'];
+				$Price = $_POST['Price'];
+
+				$conn = DB();
+
+				$stmt = "INSERT INTO Amazon (ASIN, Title, MPN, Price) VALUES (:ASIN, :Title, :MPN, :Price)";
+
+				$query = $conn -> prepare($stmt);
+				$query -> execute(array(
+					':ASIN' => $ASIN,
+					':Title' => $Title,
+					':MPN' => $MPN,
+					':Price' => $Price));
+
+				echo 'true';
+			}
 		}
+
+		else echo 'false';
+
+		exit();
 	}
-	// else echo '0';
 
-	$requestASIN = 'B00A35X6NU';
-
-	if(isset($requestASIN)):
-
-		// 1. Enter the time stamp.
-
-		$timestamp = gmdate("Y-m-d\TH:i:s\\Z", time());
-
-		// 2. URL-encode the request
+	if(isset($_GET['ASIN'])){
 
 		$AWSAccessKeyId = 'AKIAIOWFZ4KTTJAKNLFQ';
 		$AssociateTag = 'q0d9b-20';
-		$ItemId = $requestASIN;
+		$ItemId = $_GET['ASIN'];
 		$Operation = 'ItemLookup';
 		$ResponseGroup = 'OfferFull';
 		$ResponseGroup = 'ItemAttributes';
 		$Service = 'AWSECommerceService';
-		$Timestamp_encoded = urlencode($timestamp);
+		$Timestamp_encoded = urlencode(gmdate("Y-m-d\TH:i:s\\Z", time()));
 		$Version = '2013-08-01';
 
 		$secretKey = 'DL6rUpqfXpMuQEVmiGGYgudKa0ePlbaR8OX4OjHB';
@@ -59,17 +62,8 @@ webservices.amazon.com
 ' . $myString;
 
 		$signature = base64_encode(hash_hmac('SHA256', $stringToSign, $secretKey, True));
-
 		$urlEncodedSignature = urlencode($signature);
-
 		$requestUrl = 'http://webservices.amazon.com/onca/xml?' . $myString . '&Signature=' . $urlEncodedSignature;
-
-		?>
-
-		<a href="<?php echo $requestUrl; ?>">Link</a>
-		<br>
-
-		<?php
 
 		$response = file_get_contents($requestUrl);
 		$parsedXml = simplexml_load_string($response);
@@ -86,17 +80,36 @@ webservices.amazon.com
 			$mpn = $parsedXml -> Items -> Item -> ItemAttributes -> MPN;
 			$price = $parsedXml -> Items -> Item -> ItemAttributes -> ListPrice -> FormattedPrice;
 
-			$arr = array("ASIN" => "$asin", "Title" => "$title", "MPN" => "$mpn", "Price" => "$price");
-
+			$arr = array("Exists" => "true", "ASIN" => "$asin", "Title" => "$title", "MPN" => "$mpn", "Price" => "$price");
 			echo json_encode($arr);
-
-			// echo 'ASIN: ' . $asin . '<br>';
-			// echo 'Title: ' . $title . '<br>';
-			// echo 'MPN: ' . $mpn . '<br>';
-			// echo 'Price: ' . $price . '<br>';
 		}
-		// else echo 'No offers found';
+		else{
 
-	endif;
+			$arr = array("Exists" => "false");
+			echo json_encode($arr);
+		}
+		exit();
+	}
+
+	else{
+
+		$conn = DB();
+
+		$result = $conn -> query('SELECT * FROM Amazon');
+
+		if($result -> rowCount() !== 0){
+			while($row = $result -> fetch()){
+				$asin = $row['ASIN'];
+				$title = $row['Title'];
+				$mpn = $row['MPN'];
+				$price = $row['Price'];
+
+				include('../views/row.part.php');
+
+				// Rewrite this block later, have it output json
+			}
+		}
+		// else echo 'Rowcount is 0';
+	}
 
 ?>

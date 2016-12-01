@@ -2,6 +2,7 @@
 <html lang="en">
 
 	<!-- https://github.com/dmitriyklyuzov/quantum -->
+
 <head>
 	<meta charset="UTF-8">
 	<title>Dmitriy Klyuzov</title>
@@ -11,7 +12,9 @@
 
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/getRows.js"></script>
+	<script type="text/javascript" src="js/getRowsFromDB.js"></script>
+	<script type="text/javascript" src="js/itemLookup.js"></script>
+	<script type="text/javascript" src="js/insertIntoDB.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -45,7 +48,7 @@
 					<h2 class="text-center">Input</h2>
 				</div>
 				<div class="panel-body">
-					<form action="login" method="POST" onsubmit="event.preventDefault(); login()">
+					<form onsubmit="event.preventDefault(); itemLookup($('#ASIN').val());">
 
 						<!-- Input -->
 						<div class="form-group text-center">
@@ -53,16 +56,40 @@
 								<div class="input-group-addon">
 									<span class="glyphicon glyphicon-search"></span>
 								</div>
-								<input type="text" class="form-control input-lg" placeholder="" autofocus>
+								<input type="text" name="ASIN" id="ASIN" class="form-control input-lg" placeholder="" autofocus>
 							</div>
 						</div>
 
 						<!-- Button -->
 						<div class="form-group form-inline text-center">
-							<input type="submit" name="submit" class="btn btn-success" value="CHECK">
+							<input type="submit" name="submit" id="requestBtn" class="btn btn-success" value="MAKE API REQUEST">
 						</div>
 
 					</form>
+
+					<table id="myTable2" class="table displayNone">
+						<thead>
+							<tr>
+								<th>ASIN</th>
+								<th>Title</th>
+								<th>MPN</th>
+								<th>Price</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr id="resultRow"></tr>
+							
+						</tbody>
+					</table>
+
+					<form onsubmit="event.preventDefault(); insertIntoDB($('#td_ASIN').html(), $('#td_Title').html(), $('#td_MPN').html(), $('#td_Price').html());">
+						
+						<!-- Button -->
+						<div class="text-center">
+							<input type="submit" name="submit" id="insertBtn" class="btn btn-success displayNone" value="INSERT INTO DB">
+						</div>
+					</form>
+
 				</div>
 			</div>
 		</div>
@@ -70,7 +97,7 @@
 </body>
 	<script>
 		$(document).ready(function(){
-			getRows();
+			getRowsFromDB();
 		});
 	</script>
 </html>
