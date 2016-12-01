@@ -13,7 +13,7 @@ The second column should contain a text input field and a button.
  - The response will be rendered underneath the input field / button. When the content is rendered, there should be an additional button that will insert these values into the database.
  - On click, insert these values into the MySQL db.
 
- ## Requirements
+## Requirements
 
 The application should only be on one page, and have no reloads. The display page MUST end in .html, and PHP should ONLY be used to make the connection to Amazon as well as return the json response. The end result should contain: 
 1 Main Application Page (HTML)
