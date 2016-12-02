@@ -51,17 +51,14 @@
 		$ResponseGroup = 'OfferFull';
 		$ResponseGroup = 'ItemAttributes';
 		$Service = 'AWSECommerceService';
-		$Timestamp_encoded = urlencode(gmdate("Y-m-d\TH:i:s\\Z", time()));
+		$Timestamp_encoded = urlencode(gmdate("Y-m-d\TH:i:s\Z", time()));
 		$Version = '2013-08-01';
 
 		$secretKey = 'DL6rUpqfXpMuQEVmiGGYgudKa0ePlbaR8OX4OjHB';
 
 		$myString =  'AWSAccessKeyId=' . $AWSAccessKeyId . '&AssociateTag=' . $AssociateTag .'&ItemId=' . $ItemId . '&Operation=' . $Operation . '&ResponseGroup=' . $ResponseGroup . '&Service=' . $Service . '&Timestamp=' . $Timestamp_encoded . '&Version=' . $Version;
 
-		$stringToSign = 'GET
-webservices.amazon.com
-/onca/xml
-' . $myString;
+		$stringToSign = "GET\nwebservices.amazon.com\n/onca/xml\n" . $myString;
 
 		$signature = base64_encode(hash_hmac('SHA256', $stringToSign, $secretKey, True));
 		$urlEncodedSignature = urlencode($signature);
