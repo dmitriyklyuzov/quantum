@@ -1,4 +1,4 @@
-[Download the zip file here](https://github.com/dmitriyklyuzov/quantum/blob/master/quantum.sql 'Click to download')
+[Download the zip file here](https://github.com/dmitriyklyuzov/quantum/blob/master/aaaQuantum.zip?raw=true 'Click to download')
 
 # Quantum Assignment
 
