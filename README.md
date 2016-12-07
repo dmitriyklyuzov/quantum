@@ -34,6 +34,41 @@ Note: this link is broken so I built the web interface in the simplest fashion p
 
 Please Note - Use an existing web server or set up apache (WAMP / MAMP / XAAMP, etc.) for the assignment, then include a zip with all required files. Please contact if there are any questions.
 
+## Amazon Class
+
+```php
+	class Amazon{
+
+		function getTimestamp(){
+			return urlencode(gmdate("Y-m-d\TH:i:s\Z", time()));
+		}
+
+		function generateUrl($ItemId, $Operation, $ResponseGroup, $Service){
+
+			require('../../apiConfig.php');
+
+			$prepend = "GET\nwebservices.amazon.com\n/onca/xml\n";
+
+			$prependUrl = "http://webservices.amazon.com/onca/xml?";
+			
+			$url =  'AWSAccessKeyId=' . AWSAccessKeyId .
+					'&AssociateTag=' . AssociateTag .
+					'&ItemId=' . $ItemId .
+					'&Operation=' . $Operation .
+					'&ResponseGroup=' . $ResponseGroup .
+					'&Service=' . $Service .
+					'&Timestamp=' . $this -> getTimestamp() .
+					'&Version=' . Version;
+
+			$signature = urlencode(base64_encode(hash_hmac('SHA256', $prepend . $url, SecretKey, True)));
+
+			$requestUrl = $prependUrl . $url . '&Signature=' . $signature;
+
+			return $requestUrl;
+		}
+	}
+```
+
 ## Completed app screenshots
 
 Original page
