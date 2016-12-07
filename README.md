@@ -18,13 +18,9 @@ The second column should contain a text input field and a button.
 The application should only be on one page, and have no reloads. The display page MUST end in .html, and PHP should ONLY be used to make the connection to Amazon as well as return the json response. The end result should contain: 
 
 1 Main Application Page (HTML)
-
 1 Class which will contain the function used to call AWS and return the JSON response, as well as a function to insert into the database (PHP)
-
 1 Database with 1 Table (MySQL)
-
 1 Config file (Outlining the credentials for the database and the API)
-
 1 SQL dump of the database containing the information gathered from Amazon
 
 ## Credentials
