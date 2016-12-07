@@ -2,17 +2,42 @@
 	
 	require('../../database.php');
 
+	class Amazon{
+
+		function getTimestamp(){
+			return urlencode(gmdate("Y-m-d\TH:i:s\Z", time()));
+		}
+
+		function generateUrl($ItemId, $Operation, $ResponseGroup, $Service){
+
+			require('../../apiConfig.php');
+
+			$prepend = "GET\nwebservices.amazon.com\n/onca/xml\n";
+
+			$prependUrl = "http://webservices.amazon.com/onca/xml?";
+			
+			$url =  'AWSAccessKeyId=' . AWSAccessKeyId .
+					'&AssociateTag=' . AssociateTag .
+					'&ItemId=' . $ItemId .
+					'&Operation=' . $Operation .
+					'&ResponseGroup=' . $ResponseGroup .
+					'&Service=' . $Service .
+					'&Timestamp=' . $this -> getTimestamp() .
+					'&Version=' . Version;
+
+			$signature = urlencode(base64_encode(hash_hmac('SHA256', $prepend . $url, SecretKey, True)));
+
+			$requestUrl = $prependUrl . $url . '&Signature=' . $signature;
+
+			return $requestUrl;
+		}
+	}
+
 	if(isset($_POST['ASIN'])){
 
 		$ASIN = $_POST['ASIN'];
 
-		// check if this asin is in the database already
-
-		$conn = DB();
-		$query = $conn -> prepare("SELECT ASIN FROM Amazon WHERE ASIN = :ASIN");
-		$query -> execute(array(':ASIN' => $ASIN));
-
-		if($query -> rowCount()==0){
+		if(!existsInDB($ASIN)){
 
 			if(isset($_POST['Title']) && isset($_POST['MPN']) && isset($_POST['Price'])){
 
@@ -44,49 +69,48 @@
 
 	if(isset($_GET['ASIN'])){
 
-		$AWSAccessKeyId = 'AKIAIOWFZ4KTTJAKNLFQ';
-		$AssociateTag = 'q0d9b-20';
-		$ItemId = $_GET['ASIN'];
-		$Operation = 'ItemLookup';
-		$ResponseGroup = 'OfferFull';
-		$ResponseGroup = 'ItemAttributes';
-		$Service = 'AWSECommerceService';
-		$Timestamp_encoded = urlencode(gmdate("Y-m-d\TH:i:s\Z", time()));
-		$Version = '2013-08-01';
+		$ASIN = $_GET['ASIN'];
 
-		$secretKey = 'DL6rUpqfXpMuQEVmiGGYgudKa0ePlbaR8OX4OjHB';
 
-		$myString =  'AWSAccessKeyId=' . $AWSAccessKeyId . '&AssociateTag=' . $AssociateTag .'&ItemId=' . $ItemId . '&Operation=' . $Operation . '&ResponseGroup=' . $ResponseGroup . '&Service=' . $Service . '&Timestamp=' . $Timestamp_encoded . '&Version=' . $Version;
+		// Check if ASIN is not empty and is 10 letters/numbers in length
+		if(strlen($ASIN)==10){
+			$amazon = new Amazon();
 
-		$stringToSign = "GET\nwebservices.amazon.com\n/onca/xml\n" . $myString;
+			$requestUrl = $amazon -> generateUrl($ASIN, "ItemLookup", "ItemAttributes", "AWSECommerceService");
 
-		$signature = base64_encode(hash_hmac('SHA256', $stringToSign, $secretKey, True));
-		$urlEncodedSignature = urlencode($signature);
-		$requestUrl = 'http://webservices.amazon.com/onca/xml?' . $myString . '&Signature=' . $urlEncodedSignature;
+			$response = file_get_contents($requestUrl);
+			$parsedXml = simplexml_load_string($response);
 
-		$response = file_get_contents($requestUrl);
-		$parsedXml = simplexml_load_string($response);
+			$dom = new DOMDocument;
+			$dom -> loadXml($response);
 
-		$dom = new DOMDocument;
-		$dom -> loadXml($response);
+			$totalOffers = $dom -> getElementsByTagName('Item')->length;
 
-		$totalOffers = $dom -> getElementsByTagName('Item')->length;
+			if($totalOffers!=0){
 
-		if($totalOffers!=0){
+				$asin = $parsedXml -> Items -> Item -> ASIN;
+				$title = $parsedXml -> Items -> Item -> ItemAttributes -> Title;
+				$mpn = $parsedXml -> Items -> Item -> ItemAttributes -> MPN;
+				$price = $parsedXml -> Items -> Item -> ItemAttributes -> ListPrice -> FormattedPrice;
 
-			$asin = $parsedXml -> Items -> Item -> ASIN;
-			$title = $parsedXml -> Items -> Item -> ItemAttributes -> Title;
-			$mpn = $parsedXml -> Items -> Item -> ItemAttributes -> MPN;
-			$price = $parsedXml -> Items -> Item -> ItemAttributes -> ListPrice -> FormattedPrice;
+				$arr = array("Exists" => "true", "ASIN" => "$asin", "Title" => "$title", "MPN" => "$mpn", "Price" => "$price");
+				echo json_encode($arr);
+			}
 
-			$arr = array("Exists" => "true", "ASIN" => "$asin", "Title" => "$title", "MPN" => "$mpn", "Price" => "$price");
-			echo json_encode($arr);
+			// ASIN doesn't exist
+			else{
+
+				$arr = array("Exists" => "false");
+				echo json_encode($arr);
+			}
 		}
+
+		// ASIN is not 10 chars in length
 		else{
-
-			$arr = array("Exists" => "false");
+			$arr = array("Exists" => "length");
 			echo json_encode($arr);
 		}
+		
 		exit();
 	}
 
@@ -104,11 +128,8 @@
 				$price = $row['Price'];
 
 				include('../views/row.part.php');
-
-				// Rewrite this block later, have it output json
 			}
 		}
-		// else echo 'Rowcount is 0';
 	}
 
 ?>

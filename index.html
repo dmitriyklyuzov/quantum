@@ -25,19 +25,21 @@
 				</div>
 
 				<div class="panel-body">
-					<table id="myTable" class="table">
-						<thead>
-							<tr>
-								<th>ASIN</th>
-								<th>Title</th>
-								<th>MPN</th>
-								<th>Price</th>
-							</tr>
-						</thead>
-						<tbody>
-							
-						</tbody>
-					</table>
+					<div class="table-responsive">
+						<table id="myTable" class="table">
+							<thead>
+								<tr>
+									<th>ASIN</th>
+									<th>Title</th>
+									<th>MPN</th>
+									<th>Price</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -67,20 +69,22 @@
 
 					</form>
 
-					<table id="myTable2" class="table displayNone">
-						<thead>
-							<tr>
-								<th>ASIN</th>
-								<th>Title</th>
-								<th>MPN</th>
-								<th>Price</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr id="resultRow"></tr>
-							
-						</tbody>
-					</table>
+					<div class="table-responsive">
+						<table id="myTable2" class="table displayNone">
+							<thead>
+								<tr>
+									<th>ASIN</th>
+									<th>Title</th>
+									<th>MPN</th>
+									<th>Price</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr id="resultRow"></tr>
+								
+							</tbody>
+						</table>
+					</div>
 
 					<form onsubmit="event.preventDefault(); insertIntoDB($('#td_ASIN').html(), $('#td_Title').html(), $('#td_MPN').html(), $('#td_Price').html());">
 						

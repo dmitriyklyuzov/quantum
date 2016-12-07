@@ -11,7 +11,27 @@ function insertIntoDB(ASIN, Title, MPN, Price){
 				$('#insertBtn').hide();
 				$('#resultRow').html();
 			}
-			else alert('This ASIN is already in the database.');
+			else if(result=='false'){
+				alert('This ASIN is already in the database.');
+				$('#myTable2').hide();
+				$('#insertBtn').hide();
+				$('#resultRow').html();
+				$('#ASIN').focus();
+			}
+			else if(result=='length'){
+				alert('ASIN has to be 10 characters in length.');
+				$('#myTable2').hide();
+				$('#insertBtn').hide();
+				$('#resultRow').html();
+				$('#ASIN').focus();
+			}
+			else{
+				alert('An unkown error occured. Please try again.');
+				$('#myTable2').hide();
+				$('#insertBtn').hide();
+				$('#resultRow').html();
+				$('#ASIN').focus();
+			}
 		}
 	});
 }
